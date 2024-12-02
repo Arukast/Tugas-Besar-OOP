@@ -25,3 +25,4 @@ replay_pid*
 
 # file konfigurasi netbeaans
 nbproject/
+/build/
