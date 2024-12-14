@@ -4,6 +4,10 @@
  */
 package aplikasiperpustakaan;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author Tubagus Alta
@@ -36,51 +40,108 @@ public class Anggota extends Pengguna{
 
     @Override
     public void tampilkanDataPengguna() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void setNomorIdentifikasi(String nomorIdentifikasi) {
-        super.setNomorIdentifikasi(nomorIdentifikasi); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public void setNomorIdentifikasiPengguna(String nomorIdentifikasi) {
+        super.setNomorIdentifikasiPengguna(nomorIdentifikasi);
     }
 
     @Override
     public void setNamaPengguna(String namaPengguna) {
-        super.setNamaPengguna(namaPengguna); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.setNamaPengguna(namaPengguna);
     }
 
     @Override
     public void setKontakPengguna(String kontakPengguna) {
-        super.setKontakPengguna(kontakPengguna); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.setKontakPengguna(kontakPengguna);
     }
 
     @Override
-    public String getNomorIdentifikasi() {
-        return super.getNomorIdentifikasi(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public String getNomorIdentifikasiPengguna() {
+        return super.getNomorIdentifikasiPengguna();
     }
 
     @Override
     public String getNamaPengguna() {
-        return super.getNamaPengguna(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return super.getNamaPengguna(); 
     }
 
     @Override
     public String getKontakPengguna() {
-        return super.getKontakPengguna(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return super.getKontakPengguna();
     }
 
     @Override
-    public void inputData() {
-        super.inputData(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public boolean createData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "INSERT INTO anggota(idAnggota, statusAnggota) VALUES (?,?)";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.idAnggota);
+            ps.setBoolean(2, this.statusAnggota);
+
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void hapusData() {
-        super.hapusData(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public void readData(String query) throws SQLException {
+        super.readData("SELECT * FROM pengguna INNER JOIN anggota ON pengguna.nomorIdentifikasiPengguna = anggota.nomorIdentifikasiPengguna");
     }
-
+  
     @Override
-    public void updateData() {
-        super.updateData(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public boolean updateData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "UPDATE anggota SET statusAnggota = ? WHERE idAnggota = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setBoolean(1, this.statusAnggota);
+            ps.setString(2, this.idAnggota);
+                        
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }       
+    }
+    
+    @Override
+    public boolean deleteData() throws SQLException {
+        return super.deleteData();
     }
 }

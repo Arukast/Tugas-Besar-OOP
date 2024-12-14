@@ -4,12 +4,15 @@
  */
 package aplikasiperpustakaan;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 /**
  *
  * @author Tubagus Alta
  */
 public interface DataManajemen {
-    public void inputData();
-    public void hapusData();
-    public void updateData();
+    public boolean createData() throws SQLException;
+    public void readData(String table) throws SQLException;
+    public boolean updateData() throws SQLException;
+    public boolean deleteData() throws SQLException;
 }

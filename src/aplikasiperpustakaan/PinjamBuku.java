@@ -4,31 +4,38 @@
  */
 package aplikasiperpustakaan;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author Tubagus Alta
  */
 public class PinjamBuku implements DataManajemen {
-    String idPinjamBuku;
-    String tanggalPinjamBuku;
-    String tenggatTanggalPengembalianBuku;
-    boolean bukuSudahkembali;
-    String tanggalPengembalianBuku;
+    private String idPeminjamanBuku;
+    private String tanggalPeminjamanBuku;
+    private String tenggatTanggalPengembalianBuku;
+    private boolean bukuSudahkembali = false;
+    private String tanggalPengembalianBuku;
+    KoneksiDB kdb = new KoneksiDB();
+
 
     public PinjamBuku(String idPinjamBuku, String tanggalPinjamBuku, String tenggatTanggalPengembalianBuku, boolean bukuSudahkembali, String tanggalPengembalianBuku) {
-        this.idPinjamBuku = idPinjamBuku;
-        this.tanggalPinjamBuku = tanggalPinjamBuku;
+        this.idPeminjamanBuku = idPinjamBuku;
+        this.tanggalPeminjamanBuku = tanggalPinjamBuku;
         this.tenggatTanggalPengembalianBuku = tenggatTanggalPengembalianBuku;
         this.bukuSudahkembali = bukuSudahkembali;
         this.tanggalPengembalianBuku = tanggalPengembalianBuku;
     }
 
-    public void setIdPinjamBuku(String idPinjamBuku) {
-        this.idPinjamBuku = idPinjamBuku;
+    public void setIdPeminjamanBuku(String idPeminjamanBuku) {
+        this.idPeminjamanBuku = idPeminjamanBuku;
     }
 
-    public void setTanggalPinjamBuku(String tanggalPinjamBuku) {
-        this.tanggalPinjamBuku = tanggalPinjamBuku;
+    public void setTanggalPeminjamanBuku(String tanggalPeminjamanBuku) {
+        this.tanggalPeminjamanBuku = tanggalPeminjamanBuku;
     }
 
     public void setTenggatTanggalPengembalianBuku(String tenggatTanggalPengembalianBuku) {
@@ -43,12 +50,12 @@ public class PinjamBuku implements DataManajemen {
         this.bukuSudahkembali = bukuSudahkembali;
     }
 
-    public String getIdPinjamBuku() {
-        return idPinjamBuku;
+    public String getIdPeminjamanBuku() {
+        return idPeminjamanBuku;
     }
 
-    public String getTanggalPinjamBuku() {
-        return tanggalPinjamBuku;
+    public String getTanggalPeminjamanBuku() {
+        return tanggalPeminjamanBuku;
     }
 
     public String getTenggatTanggalPengembalianBuku() {
@@ -64,19 +71,123 @@ public class PinjamBuku implements DataManajemen {
     }
 
     @Override
-    public void inputData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean createData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "INSERT INTO pinjamBuku(tanggalPeminjamanBuku, tenggatTanggalPengembalianBuku, bukuSudahKembali, tanggalPengembalianBuku) VALUES (?,?,?,?)";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.tanggalPeminjamanBuku);
+            ps.setString(2, this.tenggatTanggalPengembalianBuku);
+            ps.setBoolean(3, this.bukuSudahkembali);
+            ps.setString(4, this.tanggalPengembalianBuku);
+
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void hapusData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void readData(String query) throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String querySQL = "SELECT * FROM pinjamBuku";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            rs = ps.executeQuery();
+            
+            //TODO: Ada lanjutan
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
     }
-
+  
     @Override
-    public void updateData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean updateData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "UPDATE pinjamBuku SET tanggalPeminjamanBuku = ?, tenggatTanggalPengembalianBuku = ?, bukuSudahKembali = ?, tanggalPengembalianBuku = ? WHERE idPeminjamanBuku = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.tanggalPeminjamanBuku);
+            ps.setString(2, this.tenggatTanggalPengembalianBuku);
+            ps.setBoolean(3, this.bukuSudahkembali);
+            ps.setString(4, this.tanggalPengembalianBuku);
+            ps.setString(5, this.idPeminjamanBuku);
+            
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }       
     }
     
-    
+    @Override
+    public boolean deleteData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "DELETE FROM pinjamBuku WHERE idPeminjamanBuku = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.idPeminjamanBuku);
+            
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

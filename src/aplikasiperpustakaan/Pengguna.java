@@ -4,25 +4,32 @@
  */
 package aplikasiperpustakaan;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author Tubagus Alta
  */
 public abstract class Pengguna implements DataManajemen{
-    private String nomorIdentifikasi;
+    private String nomorIdentifikasiPengguna;
     private String namaPengguna;
     private String kontakPengguna;
+    KoneksiDB kdb = new KoneksiDB();
+
     
     public abstract void tampilkanDataPengguna();
 
     public Pengguna(String nomorIdentifikasi, String namaPengguna, String kontakPengguna) {
-        this.nomorIdentifikasi = nomorIdentifikasi;
+        this.nomorIdentifikasiPengguna = nomorIdentifikasi;
         this.namaPengguna = namaPengguna;
         this.kontakPengguna = kontakPengguna;
     }
 
-    public void setNomorIdentifikasi(String nomorIdentifikasi) {
-        this.nomorIdentifikasi = nomorIdentifikasi;
+    public void setNomorIdentifikasiPengguna(String nomorIdentifikasiPengguna) {
+        this.nomorIdentifikasiPengguna = nomorIdentifikasiPengguna;
     }
 
     public void setNamaPengguna(String namaPengguna) {
@@ -33,8 +40,8 @@ public abstract class Pengguna implements DataManajemen{
         this.kontakPengguna = kontakPengguna;
     }
 
-    public String getNomorIdentifikasi() {
-        return nomorIdentifikasi;
+    public String getNomorIdentifikasiPengguna() {
+        return nomorIdentifikasiPengguna;
     }
 
     public String getNamaPengguna() {
@@ -46,17 +53,144 @@ public abstract class Pengguna implements DataManajemen{
     }
 
     @Override
-    public void inputData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean createData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "INSERT INTO pengguna(nomorIdentifikasiPengguna, namaPengguna, kontakPengguna) VALUES (?,?,?)";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.nomorIdentifikasiPengguna);
+            ps.setString(2, this.namaPengguna);
+            ps.setString(3, this.kontakPengguna);
+
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void hapusData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void readData(String query) throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String querySQL = query;
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            rs = ps.executeQuery();
+            
+            //TODO: Ada lanjutan
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
     }
 
+
+    public void readData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String querySQL = "SELECT * FROM pengguna";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            rs = ps.executeQuery();
+            
+            //TODO: Ada lanjutan
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+    }
+  
     @Override
-    public void updateData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean updateData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "UPDATE pengguna SET namaPengguna = ?, kontakPengguna = ? WHERE nomorIdentifikasiPengguna = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.namaPengguna);
+            ps.setString(2, this.kontakPengguna);
+            ps.setString(3, this.nomorIdentifikasiPengguna);
+            
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }       
+    }
+    
+    @Override
+    public boolean deleteData() throws SQLException {
+        // input data ke database
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "DELETE FROM pengguna WHERE nomorIdentifikasiPengguna = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setString(1, this.nomorIdentifikasiPengguna);
+            
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        
+        if (rowAffect > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
