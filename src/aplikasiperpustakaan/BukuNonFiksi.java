@@ -15,10 +15,10 @@ import java.sql.SQLException;
 public class BukuNonFiksi extends Buku {
     private String topikBuku;
     
-    public BukuNonFiksi(String idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String topikBuku){
-        super(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
-        this.topikBuku = topikBuku;
-    }
+//    public BukuNonFiksi(String idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String topikBuku){
+//        super(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
+//        this.topikBuku = topikBuku;
+//    }
 
     public void setTopikBuku(String topikBuku) {
         this.topikBuku = topikBuku;

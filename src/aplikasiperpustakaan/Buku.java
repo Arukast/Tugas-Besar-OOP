@@ -22,13 +22,13 @@ public class Buku implements DataManajemen {
     private int jumlahBuku;
     KoneksiDB kdb = new KoneksiDB();
     
-    public Buku(String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku){
-        this.judulBuku = judulBuku;
-        this.penulisBuku = penulisBuku;
-        this.genreBuku = genreBuku;
-        this.bahasaBuku = bahasaBuku;
-        this.jumlahBuku = jumlahBuku;
-    }
+//    public Buku(String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku){
+//        this.judulBuku = judulBuku;
+//        this.penulisBuku = penulisBuku;
+//        this.genreBuku = genreBuku;
+//        this.bahasaBuku = bahasaBuku;
+//        this.jumlahBuku = jumlahBuku;
+//    }
 
     public void setIdBuku(String idBuku) {
         this.idBuku = idBuku;

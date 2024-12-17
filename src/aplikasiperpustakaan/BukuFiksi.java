@@ -19,10 +19,10 @@ public class BukuFiksi extends Buku {
 //    KoneksiDB kdb = new KoneksiDB();
 
     
-    public BukuFiksi(String idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String subGenreBuku){
-        super(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
-        this.subGenreBuku = subGenreBuku;
-    }
+//    public BukuFiksi(String idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String subGenreBuku){
+//        super(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
+//        this.subGenreBuku = subGenreBuku;
+//    }
 
     public void setSubGenreBuku(String subGenreBuku) {
         this.subGenreBuku = subGenreBuku;

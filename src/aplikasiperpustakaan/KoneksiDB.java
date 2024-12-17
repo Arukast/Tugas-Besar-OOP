@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class KoneksiDB{
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private final String DB_URL = "jdbc:mysql://localhost/-NamaDatabase-";
+    private final String DB_URL = "jdbc:mysql://localhost/perpustakaan";
     private final String USER = "root";
     private final String PASS = "";
     private Connection conn = null;
