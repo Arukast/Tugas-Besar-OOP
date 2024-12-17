@@ -7,21 +7,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Tubagus Alta
  */
 public class Petugas extends Pengguna{
-    private String idPetugas;
+    private int idPetugas;
     private String passwordPetugas;
+    
+    public Petugas(){
+    }
 
-    public Petugas(String idPetugas, String passwordPetugas, String nomorIdentifikasiPengguna, String namaPengguna, String kontakPengguna) {
-        super(nomorIdentifikasiPengguna, namaPengguna, kontakPengguna);
+    
+    public Petugas(String passwordPetugas, String namaPengguna, String kontakPengguna) {
+        super(namaPengguna, kontakPengguna);
         this.idPetugas = idPetugas;
         this.passwordPetugas = passwordPetugas;
     }
+    
 
-    public void setIdPetugas(String idPetugas) {
+    public void setIdPetugas(int idPetugas) {
         this.idPetugas = idPetugas;
     }
 
@@ -29,7 +36,7 @@ public class Petugas extends Pengguna{
         this.passwordPetugas = passwordPetugas;
     }
 
-    public String getIdPetugas() {
+    public int getIdPetugas() {
         return idPetugas;
     }
 
@@ -43,7 +50,7 @@ public class Petugas extends Pengguna{
     }
 
     @Override
-    public void setNomorIdentifikasiPengguna(String nomorIdentifikasi) {
+    public void setNomorIdentifikasiPengguna(int nomorIdentifikasi) {
         super.setNomorIdentifikasiPengguna(nomorIdentifikasi);
         
     }
@@ -59,7 +66,7 @@ public class Petugas extends Pengguna{
     }
 
     @Override
-    public String getNomorIdentifikasiPengguna() {
+    public int getNomorIdentifikasiPengguna() {
         return super.getNomorIdentifikasiPengguna();
     }
 
@@ -73,9 +80,36 @@ public class Petugas extends Pengguna{
         return super.getKontakPengguna();
     }
 
+    public boolean loginPetugas(int idPetugas, String password) throws SQLException{
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        boolean flag = false;
+        String querySQL = "SELECT * FROM petugas WHERE idPetugas = ? AND passwordPetugas = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setInt(1, idPetugas);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                flag = true;
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        return flag;
+    }
+    
     @Override
-    public boolean createData() throws SQLException {
+    public int createData() throws SQLException {
         // input data ke database
+        super.createData();
         Connection dbConnection = null;
         PreparedStatement ps = null;
         int rowAffect = 0;
@@ -86,7 +120,7 @@ public class Petugas extends Pengguna{
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.idPetugas);
+            ps.setInt(1, this.idPetugas);
             ps.setString(2, this.passwordPetugas);
 
             rowAffect = ps.executeUpdate();
@@ -98,16 +132,22 @@ public class Petugas extends Pengguna{
         }
         
         if (rowAffect > 0) {
-            return true;
+            return 1;
         } else {
-            return false;
+            return 1;
         }
     }
 
     @Override
-    public void readData(String query) throws SQLException {
-        super.readData("SELECT * FROM pengguna INNER JOIN petugas ON pengguna.nomorIdentifikasiPengguna = petugas.nomorIdentifikasiPengguna");
+    public List<Object[]> readData() throws SQLException {
+        return super.readData(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
+    
+    
+//    @Override
+//    public void readData(String query) throws SQLException {
+//        super.readData("SELECT * FROM pengguna INNER JOIN petugas ON pengguna.nomorIdentifikasiPengguna = petugas.nomorIdentifikasiPengguna");
+//    }
   
     @Override
     public boolean updateData() throws SQLException {
@@ -123,7 +163,7 @@ public class Petugas extends Pengguna{
                     
             ps = dbConnection.prepareStatement(querySQL);
             ps.setString(1, this.passwordPetugas);
-            ps.setString(2, this.idPetugas);
+            ps.setInt(2, this.idPetugas);
                         
             rowAffect = ps.executeUpdate();
             

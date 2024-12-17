@@ -3,17 +3,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package aplikasiperpustakaan;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Hamas NF
  */
 public class AnggotaListPage extends javax.swing.JFrame {
-
+    Anggota anggota = new Anggota();
     /**
      * Creates new form AnggotaList
      */
     public AnggotaListPage() {
         initComponents();
+        setLocationRelativeTo(null);
+        try {
+            tampilListBukuTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(AnggotaListPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -36,6 +51,7 @@ public class AnggotaListPage extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         listAnggotaTable = new javax.swing.JTable();
         addMemberButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -99,6 +115,13 @@ public class AnggotaListPage extends javax.swing.JFrame {
             }
         });
 
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -120,26 +143,33 @@ public class AnggotaListPage extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(addMemberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
+                        .addComponent(backButton)
+                        .addGap(75, 75, 75)
                         .addComponent(jLabel1)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(backButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(namaAnggotaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nomorKontakTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addMemberButton)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(16, 16, 16)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(namaAnggotaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
                         .addComponent(jLabel3)))
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,8 +190,7 @@ public class AnggotaListPage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,12 +202,57 @@ public class AnggotaListPage extends javax.swing.JFrame {
 
     private void addMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberButtonActionPerformed
         // TODO add your handling code here:
+        String namaAnggota = namaAnggotaTF.getText();
+        String kontakPengguna = nomorKontakTF.getText();
+        
+        Pengguna pengguna = new Pengguna(namaAnggota, kontakPengguna) {
+            @Override
+            public void tampilkanDataPengguna() {
+                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+        };
+        Anggota anggota = new Anggota();
+        try {
+            int nomorIdentifikasi = pengguna.createData();
+            System.out.println(nomorIdentifikasi);
+            if (nomorIdentifikasi != -1) {
+                anggota.setNomorIdentifikasiPengguna(nomorIdentifikasi);
+                anggota.createData();
+                System.out.println("tses");
+
+                JOptionPane.showMessageDialog(this, "Buku berhasil ditambahkan!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal menambahkan buku.", "Error", JOptionPane.ERROR_MESSAGE);
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            new AnggotaListPage().setVisible(true);
+            dispose();
+        }
+        
     }//GEN-LAST:event_addMemberButtonActionPerformed
 
     private void namaAnggotaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaAnggotaTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_namaAnggotaTFActionPerformed
 
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+        dispose();
+        new MenuPilihanPage().setVisible(true);
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    public void tampilListBukuTable() throws SQLException{
+        DefaultTableModel modelTable = (DefaultTableModel) listAnggotaTable.getModel();
+        modelTable.setRowCount(0);
+        
+        List<Object[]> dataList = anggota.readData();
+        
+        for (Object[] rowData : dataList) {
+            modelTable.addRow(rowData);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -210,13 +284,16 @@ public class AnggotaListPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AnggotaListPage().setVisible(true);
+                AnggotaListPage anggotaList = new AnggotaListPage();
+                anggotaList.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                anggotaList.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addMemberButton;
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

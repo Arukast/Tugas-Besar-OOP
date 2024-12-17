@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -71,7 +72,7 @@ public class PinjamBuku implements DataManajemen {
     }
 
     @Override
-    public boolean createData() throws SQLException {
+    public int createData() throws SQLException {
         // input data ke database
         Connection dbConnection = null;
         PreparedStatement ps = null;
@@ -97,35 +98,18 @@ public class PinjamBuku implements DataManajemen {
         }
         
         if (rowAffect > 0) {
-            return true;
+            return 1;
         } else {
-            return false;
+            return 1;
         }
     }
 
     @Override
-    public void readData(String query) throws SQLException {
-        // input data ke database
-        Connection dbConnection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        String querySQL = "SELECT * FROM pinjamBuku";
-        try {
-            kdb.bukaKoneksi();
-            dbConnection = kdb.getConnection();
-                    
-            ps = dbConnection.prepareStatement(querySQL);
-            rs = ps.executeQuery();
-            
-            //TODO: Ada lanjutan
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            ps.close();
-        }
+    public List<Object[]> readData() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+
   
     @Override
     public boolean updateData() throws SQLException {

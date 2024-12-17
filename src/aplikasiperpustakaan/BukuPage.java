@@ -4,19 +4,31 @@
  */
 package aplikasiperpustakaan;
 
-import javax.swing.JFrame;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
  * @author Tubagus Alta
  */
 public class BukuPage extends javax.swing.JFrame {
-
+    Buku buku = new Buku();
     /**
      * Creates new form BukuPage
      */
     public BukuPage() {
         initComponents();
+        setLocationRelativeTo(null);
+        try {
+            tampilListBukuTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null,ex);
+        }
     }
 
     /**
@@ -26,28 +38,13 @@ public class BukuPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        genre = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listBukuTable = new javax.swing.JTable();
         tampilkanBukuFiksiButton = new javax.swing.JButton();
         tampilkanBukuNonFiksiButton = new javax.swing.JButton();
-        createButton = new javax.swing.JButton();
-        updateButton = new javax.swing.JButton();
-        deleteButton = new javax.swing.JButton();
-        judulTf = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        penulisTf = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        fiksiRB = new javax.swing.JRadioButton();
-        nonFiksiRB = new javax.swing.JRadioButton();
         backButton = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        bahasaTf = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jumlahTf = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,13 +58,19 @@ public class BukuPage extends javax.swing.JFrame {
             new String [] {
                 "Id Buku", "Judul", "Penulis", "Genre", "Bahasa", "Jumlah"
             }
-        ));
-        listBukuTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                listBukuTableMouseClicked(evt);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        listBukuTable.setColumnSelectionAllowed(true);
+        listBukuTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(listBukuTable);
+        listBukuTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (listBukuTable.getColumnModel().getColumnCount() > 0) {
             listBukuTable.getColumnModel().getColumn(5).setMaxWidth(50);
         }
@@ -86,63 +89,6 @@ public class BukuPage extends javax.swing.JFrame {
             }
         });
 
-        createButton.setText("Create");
-        createButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createButtonActionPerformed(evt);
-            }
-        });
-
-        updateButton.setText("Update");
-        updateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateButtonActionPerformed(evt);
-            }
-        });
-
-        deleteButton.setText("Delete");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
-
-        judulTf.setText("Masukkan Judul");
-        judulTf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                judulTfActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Judul");
-
-        jLabel2.setText("Penulis");
-
-        penulisTf.setText("Masukkan Penulis");
-        penulisTf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                penulisTfActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Genre");
-
-        genre.add(fiksiRB);
-        fiksiRB.setText("Fiksi");
-        fiksiRB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fiksiRBActionPerformed(evt);
-            }
-        });
-
-        genre.add(nonFiksiRB);
-        nonFiksiRB.setText("Non-Fiksi");
-        nonFiksiRB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nonFiksiRBActionPerformed(evt);
-            }
-        });
-
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,126 +96,44 @@ public class BukuPage extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Bahasa");
-
-        bahasaTf.setText("Masukkan Bahasa");
-
-        jLabel5.setText("Data Menu");
-
-        jLabel6.setText("Jumlah");
-
-        jumlahTf.setText("Masukkan Jumlah");
-        jumlahTf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jumlahTfActionPerformed(evt);
-            }
-        });
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Menu List Buku");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(backButton)
-                        .addGap(14, 14, 14)
                         .addComponent(tampilkanBukuFiksiButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tampilkanBukuNonFiksiButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel6)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(fiksiRB)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                                                .addComponent(nonFiksiRB))
-                                            .addComponent(jLabel3))
-                                        .addGap(35, 35, 35))
-                                    .addComponent(bahasaTf)
-                                    .addComponent(penulisTf)
-                                    .addComponent(judulTf)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(deleteButton)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(updateButton)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(createButton))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(jLabel2))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(jLabel4))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(9, 9, 9)
-                                                .addComponent(jLabel1)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(101, 101, 101)
-                        .addComponent(jLabel5)
+                        .addComponent(tampilkanBukuNonFiksiButton)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jumlahTf)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(backButton)
+                                .addGap(180, 180, 180)
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(2, 2, 2)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton)
-                    .addComponent(tampilkanBukuNonFiksiButton)
+                    .addComponent(jLabel1)
+                    .addComponent(backButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tampilkanBukuFiksiButton)
-                    .addComponent(jLabel5))
+                    .addComponent(tampilkanBukuNonFiksiButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(judulTf, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(penulisTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fiksiRB)
-                            .addComponent(nonFiksiRB))
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bahasaTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jumlahTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(createButton)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(deleteButton)
-                                .addComponent(updateButton)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -289,52 +153,32 @@ public class BukuPage extends javax.swing.JFrame {
 
     private void tampilkanBukuFiksiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilkanBukuFiksiButtonActionPerformed
         // TODO add your handling code here:
+        new BukuFiksiPage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_tampilkanBukuFiksiButtonActionPerformed
 
     private void tampilkanBukuNonFiksiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilkanBukuNonFiksiButtonActionPerformed
         // TODO add your handling code here:
+        new BukuNonFiksiPage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_tampilkanBukuNonFiksiButtonActionPerformed
-
-    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonActionPerformed
-
-    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_updateButtonActionPerformed
-
-    private void penulisTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_penulisTfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_penulisTfActionPerformed
-
-    private void fiksiRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiksiRBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fiksiRBActionPerformed
-
-    private void judulTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_judulTfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_judulTfActionPerformed
-
-    private void jumlahTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jumlahTfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jumlahTfActionPerformed
-
-    private void listBukuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listBukuTableMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listBukuTableMouseClicked
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        new MenuPilihanPage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void nonFiksiRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nonFiksiRBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nonFiksiRBActionPerformed
-
+    public void tampilListBukuTable() throws SQLException{
+        DefaultTableModel modelTable = (DefaultTableModel) listBukuTable.getModel();
+        modelTable.setRowCount(0);
+        
+        List<Object[]> dataList = buku.readData();
+        
+        for (Object[] rowData : dataList) {
+            modelTable.addRow(rowData);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -365,35 +209,21 @@ public class BukuPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BukuPage().setVisible(true);
-                new BukuPage().setUndecorated(true);
-                new BukuPage().setExtendedState(JFrame.MAXIMIZED_BOTH);
+                BukuPage bukuPage = new BukuPage();
+//                bukuPage.setUndecorated(true);
+//                bukuPage.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                bukuPage.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
-    private javax.swing.JTextField bahasaTf;
-    private javax.swing.JButton createButton;
-    private javax.swing.JButton deleteButton;
-    private javax.swing.JRadioButton fiksiRB;
-    private javax.swing.ButtonGroup genre;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField judulTf;
-    private javax.swing.JTextField jumlahTf;
     private javax.swing.JTable listBukuTable;
-    private javax.swing.JRadioButton nonFiksiRB;
-    private javax.swing.JTextField penulisTf;
     private javax.swing.JButton tampilkanBukuFiksiButton;
     private javax.swing.JButton tampilkanBukuNonFiksiButton;
-    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

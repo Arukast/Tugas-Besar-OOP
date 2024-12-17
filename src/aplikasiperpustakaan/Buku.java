@@ -3,34 +3,51 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package aplikasiperpustakaan;
+import com.mysql.cj.xdevapi.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
         
 /**
  *
  * @author Tubagus Alta
  */
 public class Buku implements DataManajemen {
-    private String idBuku;
+    private int idBuku;
     private String judulBuku;
     private String penulisBuku;
     private String genreBuku;
     private String bahasaBuku;
     private int jumlahBuku;
     KoneksiDB kdb = new KoneksiDB();
-    
-//    public Buku(String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku){
-//        this.judulBuku = judulBuku;
-//        this.penulisBuku = penulisBuku;
-//        this.genreBuku = genreBuku;
-//        this.bahasaBuku = bahasaBuku;
-//        this.jumlahBuku = jumlahBuku;
-//    }
 
-    public void setIdBuku(String idBuku) {
+    public Buku() {
+    }
+    
+    public Buku(String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku){
+        this.judulBuku = judulBuku;
+        this.penulisBuku = penulisBuku;
+        this.genreBuku = genreBuku;
+        this.bahasaBuku = bahasaBuku;
+        this.jumlahBuku = jumlahBuku;
+    }
+
+    public Buku(int idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku) {
+        this.idBuku = idBuku;
+        this.judulBuku = judulBuku;
+        this.penulisBuku = penulisBuku;
+        this.genreBuku = genreBuku;
+        this.bahasaBuku = bahasaBuku;
+        this.jumlahBuku = jumlahBuku;
+    }
+    
+    
+
+    public void setIdBuku(int idBuku) {
         this.idBuku = idBuku;
     }
 
@@ -54,7 +71,7 @@ public class Buku implements DataManajemen {
         this.jumlahBuku = jumlahBuku;
     }
 
-    public String getIdBuku() {
+    public int getIdBuku() {
         return idBuku;
     }
 
@@ -79,18 +96,21 @@ public class Buku implements DataManajemen {
     }
     
     @Override  
-    public boolean createData() throws SQLException {
+    public int createData() throws SQLException {
         // input data ke database
         Connection dbConnection = null;
         PreparedStatement ps = null;
+        ResultSet generatedKeys = null;
         int rowAffect = 0;
+        int generatedId = -1;
         
         String querySQL = "INSERT INTO buku(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku) VALUES (?,?,?,?,?)";
+        
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
                     
-            ps = dbConnection.prepareStatement(querySQL);
+            ps = dbConnection.prepareStatement(querySQL, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, this.judulBuku);
             ps.setString(2, this.penulisBuku);
             ps.setString(3, this.genreBuku);
@@ -98,50 +118,29 @@ public class Buku implements DataManajemen {
             ps.setInt(5, this.jumlahBuku);
             
             rowAffect = ps.executeUpdate();
-            
+
+            if (rowAffect > 0) {
+                generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    generatedId = generatedKeys.getInt(1);
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
-            ps.close();
+            if (ps != null) ps.close();
+            if (generatedKeys != null) generatedKeys.close();
         }
-        
-        if (rowAffect > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return generatedId;
     }
 
     @Override
-    public void readData(String query) throws SQLException {
+    public List<Object[]> readData() throws SQLException {
         // input data ke database
         Connection dbConnection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
-        String querySQL = query;
-        try {
-            kdb.bukaKoneksi();
-            dbConnection = kdb.getConnection();
-                    
-            ps = dbConnection.prepareStatement(querySQL);
-            rs = ps.executeQuery();
-            
-            //TODO: Ada lanjutan
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            ps.close();
-        }
-    }
-
-
-    public void readData() throws SQLException {
-        // input data ke database
-        Connection dbConnection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        List<Object[]> dataList = new ArrayList<>();
         
         String querySQL = "SELECT * FROM buku";
         try {
@@ -151,13 +150,22 @@ public class Buku implements DataManajemen {
             ps = dbConnection.prepareStatement(querySQL);
             rs = ps.executeQuery();
             
-            //TODO: Ada lanjutan
-            
+            while (rs.next()) {
+                int idBuku = rs.getInt("idBuku");
+                String judulBuku = rs.getString("judulBuku");
+                String penulisBuku = rs.getString("penulisBuku");
+                String genreBuku = rs.getString("genreBuku");
+                String bahasaBuku = rs.getString("bahasaBuku");
+                int jumlahBuku = rs.getInt("jumlahBuku");
+                
+                dataList.add(new Object[]{idBuku, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku});
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             ps.close();
         }
+        return dataList;
     }
   
     @Override
@@ -178,9 +186,10 @@ public class Buku implements DataManajemen {
             ps.setString(3, this.genreBuku);
             ps.setString(4, this.bahasaBuku);
             ps.setInt(5, this.jumlahBuku);
-            ps.setString(6, idBuku);
+            ps.setInt(6, this.idBuku);
             
             rowAffect = ps.executeUpdate();
+            System.out.println("test" + this.idBuku);
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -208,7 +217,7 @@ public class Buku implements DataManajemen {
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.idBuku);
+            ps.setInt(1, this.idBuku);
             
             rowAffect = ps.executeUpdate();
             

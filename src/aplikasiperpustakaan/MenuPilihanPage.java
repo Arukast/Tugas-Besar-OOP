@@ -14,6 +14,8 @@ public class MenuPilihanPage extends javax.swing.JFrame {
      */
     public MenuPilihanPage() {
         initComponents();
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -40,8 +42,18 @@ public class MenuPilihanPage extends javax.swing.JFrame {
         jLabel2.setText("how can we help you?");
 
         daftarAnggotaButton.setText("Daftar Anggota");
+        daftarAnggotaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                daftarAnggotaButtonActionPerformed(evt);
+            }
+        });
 
         listBukuButton.setText("List Buku");
+        listBukuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listBukuButtonActionPerformed(evt);
+            }
+        });
 
         logoutButton.setText("Log out");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -96,7 +108,21 @@ public class MenuPilihanPage extends javax.swing.JFrame {
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
+        new LoginPage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_logoutButtonActionPerformed
+
+    private void listBukuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listBukuButtonActionPerformed
+        // TODO add your handling code here:
+        new BukuPage().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_listBukuButtonActionPerformed
+
+    private void daftarAnggotaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daftarAnggotaButtonActionPerformed
+        // TODO add your handling code here:
+        new AnggotaListPage().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_daftarAnggotaButtonActionPerformed
 
     /**
      * @param args the command line arguments

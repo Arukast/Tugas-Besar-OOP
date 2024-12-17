@@ -4,11 +4,14 @@
  */
 package aplikasiperpustakaan;
 
+import com.mysql.cj.xdevapi.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,13 +19,21 @@ import java.sql.SQLException;
  */
 public class BukuFiksi extends Buku {
     private String subGenreBuku;
-//    KoneksiDB kdb = new KoneksiDB();
 
+    public BukuFiksi() {
+    }
     
-//    public BukuFiksi(String idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String subGenreBuku){
-//        super(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
-//        this.subGenreBuku = subGenreBuku;
-//    }
+    public BukuFiksi(String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String subGenreBuku){
+        super(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
+        this.subGenreBuku = subGenreBuku;
+    }
+
+    public BukuFiksi(int idBuku, String judulBuku, String penulisBuku, String genreBuku, String bahasaBuku, int jumlahBuku, String subGenreBuku) {
+        super(idBuku, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
+        this.subGenreBuku = subGenreBuku;
+    }
+    
+    
 
     public void setSubGenreBuku(String subGenreBuku) {
         this.subGenreBuku = subGenreBuku;
@@ -56,7 +67,7 @@ public class BukuFiksi extends Buku {
     }
     
     @Override
-    public boolean createData() throws SQLException {
+    public int createData() throws SQLException {
         // input data ke database
         Connection dbConnection = null;
         PreparedStatement ps = null;
@@ -68,7 +79,7 @@ public class BukuFiksi extends Buku {
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, super.getIdBuku());
+            ps.setInt(1, super.getIdBuku());
             ps.setString(2, this.subGenreBuku);
             
             rowAffect = ps.executeUpdate();
@@ -80,16 +91,45 @@ public class BukuFiksi extends Buku {
         }
         
         if (rowAffect > 0) {
-            return true;
+            return 1;
         } else {
-            return false;
+            return 0;
         }
     }
     
     @Override
-    public void readData(String query) throws SQLException {
+    public List<Object[]> readData() throws SQLException {
         // input data ke database
-        super.readData("SELECT * FROM buku INNER JOIN bukuFiksi ON buku.idBuku = bukuFiksi.idBuku");
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object[]> dataList = new ArrayList<>();
+        
+        String querySQL = "SELECT * FROM buku INNER JOIN bukufiksi ON buku.idBuku = bukuFiksi.idBuku";
+        
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                int idBuku = rs.getInt("idBuku");
+                String judulBuku = rs.getString("judulBuku");
+                String penulisBuku = rs.getString("penulisBuku");
+                String bahasaBuku = rs.getString("bahasaBuku");
+                String subGenrebuku = rs.getString("subGenreBuku");
+                int jumlahBuku = rs.getInt("jumlahBuku");
+                
+                dataList.add(new Object[]{idBuku, judulBuku, penulisBuku, subGenrebuku, bahasaBuku, jumlahBuku});
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        return dataList;
     }
     
     @Override
@@ -106,7 +146,7 @@ public class BukuFiksi extends Buku {
                     
             ps = dbConnection.prepareStatement(querySQL);
             ps.setString(1, this.subGenreBuku);
-            ps.setString(2, super.getIdBuku());
+            ps.setInt(2, super.getIdBuku());
             
             rowAffect = ps.executeUpdate();
             
@@ -125,6 +165,25 @@ public class BukuFiksi extends Buku {
     
     @Override
     public boolean deleteData() throws SQLException {
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        int rowAffect = 0;
+        
+        String querySQL = "DELETE FROM bukufiksi WHERE idBuku = ?";
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            ps.setInt(1, super.getIdBuku());
+            
+            rowAffect = ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
         return super.deleteData();
     }
 }

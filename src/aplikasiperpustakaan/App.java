@@ -4,15 +4,34 @@
  */
 package aplikasiperpustakaan;
 
+import java.awt.Button;
 import java.sql.SQLException;
+import java.util.Enumeration;
+import java.util.List;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 
 /**
  *
  * @author Tubagus Alta
  */
 public class App {
+    
+    public String getSelectedButtonText(ButtonGroup buttonGroup){
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();){
+            AbstractButton button = buttons.nextElement();
+            
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+        return null;
+    }
+    
     public static void main(String[] args) throws SQLException {
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
+//        LoginPage loginPage = new LoginPage();
+//        loginPage.setVisible(true);
+        MenuPilihanPage menu = new MenuPilihanPage();
+        menu.setVisible(true);
     }
 }

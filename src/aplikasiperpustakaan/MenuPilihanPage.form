@@ -87,11 +87,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Daftar Anggota"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="daftarAnggotaButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="listBukuButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="List Buku"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listBukuButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="logoutButton">
           <Properties>

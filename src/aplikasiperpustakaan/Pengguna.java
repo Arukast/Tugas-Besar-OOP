@@ -8,27 +8,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author Tubagus Alta
  */
 public abstract class Pengguna implements DataManajemen{
-    private String nomorIdentifikasiPengguna;
+    private int nomorIdentifikasiPengguna;
     private String namaPengguna;
     private String kontakPengguna;
     KoneksiDB kdb = new KoneksiDB();
 
     
     public abstract void tampilkanDataPengguna();
+    
+    public Pengguna(){
+    }
 
-    public Pengguna(String nomorIdentifikasi, String namaPengguna, String kontakPengguna) {
-        this.nomorIdentifikasiPengguna = nomorIdentifikasi;
+    public Pengguna(String namaPengguna, String kontakPengguna) {
         this.namaPengguna = namaPengguna;
         this.kontakPengguna = kontakPengguna;
     }
 
-    public void setNomorIdentifikasiPengguna(String nomorIdentifikasiPengguna) {
+    public void setNomorIdentifikasiPengguna(int nomorIdentifikasiPengguna) {
         this.nomorIdentifikasiPengguna = nomorIdentifikasiPengguna;
     }
 
@@ -40,7 +43,7 @@ public abstract class Pengguna implements DataManajemen{
         this.kontakPengguna = kontakPengguna;
     }
 
-    public String getNomorIdentifikasiPengguna() {
+    public int getNomorIdentifikasiPengguna() {
         return nomorIdentifikasiPengguna;
     }
 
@@ -53,63 +56,44 @@ public abstract class Pengguna implements DataManajemen{
     }
 
     @Override
-    public boolean createData() throws SQLException {
+    public int createData() throws SQLException {
         // input data ke database
         Connection dbConnection = null;
         PreparedStatement ps = null;
+        ResultSet generatedKeys = null;
+        int generatedId = -1;
         int rowAffect = 0;
         
-        String querySQL = "INSERT INTO pengguna(nomorIdentifikasiPengguna, namaPengguna, kontakPengguna) VALUES (?,?,?)";
+        String querySQL = "INSERT INTO pengguna(namaPengguna, kontakPengguna) VALUES (?,?)";
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
                     
-            ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.nomorIdentifikasiPengguna);
-            ps.setString(2, this.namaPengguna);
-            ps.setString(3, this.kontakPengguna);
+            ps = dbConnection.prepareStatement(querySQL, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, this.namaPengguna);
+            ps.setString(2, this.kontakPengguna);
 
             rowAffect = ps.executeUpdate();
-            
+            generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
-            ps.close();
+            if (ps != null) ps.close();
+            if (generatedKeys != null) generatedKeys.close();
         }
         
-        if (rowAffect > 0) {
-            return true;
-        } else {
-            return false;
-        }
+//        if (rowAffect > 0) {
+//            return generatedId;
+//        } else {
+//            return 0;
+//        }
+        return generatedId;
     }
-
     @Override
-    public void readData(String query) throws SQLException {
-        // input data ke database
-        Connection dbConnection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        String querySQL = query;
-        try {
-            kdb.bukaKoneksi();
-            dbConnection = kdb.getConnection();
-                    
-            ps = dbConnection.prepareStatement(querySQL);
-            rs = ps.executeQuery();
-            
-            //TODO: Ada lanjutan
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            ps.close();
-        }
-    }
-
-
-    public void readData() throws SQLException {
+    public List<Object[]> readData() throws SQLException {
         // input data ke database
         Connection dbConnection = null;
         PreparedStatement ps = null;
@@ -130,6 +114,7 @@ public abstract class Pengguna implements DataManajemen{
         } finally {
             ps.close();
         }
+        return null;
     }
   
     @Override
@@ -147,7 +132,7 @@ public abstract class Pengguna implements DataManajemen{
             ps = dbConnection.prepareStatement(querySQL);
             ps.setString(1, this.namaPengguna);
             ps.setString(2, this.kontakPengguna);
-            ps.setString(3, this.nomorIdentifikasiPengguna);
+            ps.setInt(3, this.nomorIdentifikasiPengguna);
             
             rowAffect = ps.executeUpdate();
             
@@ -171,13 +156,13 @@ public abstract class Pengguna implements DataManajemen{
         PreparedStatement ps = null;
         int rowAffect = 0;
         
-        String querySQL = "DELETE FROM pengguna WHERE nomorIdentifikasiPengguna = ?";
+        String querySQL = "DELETE FROM pengguna WHERE nomorIdentifikasiPengguna = ";
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.nomorIdentifikasiPengguna);
+            ps.setInt(1, this.nomorIdentifikasiPengguna);
             
             rowAffect = ps.executeUpdate();
             

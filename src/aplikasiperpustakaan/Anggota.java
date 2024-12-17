@@ -6,35 +6,39 @@ package aplikasiperpustakaan;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Tubagus Alta
  */
 public class Anggota extends Pengguna{
-    private String idAnggota;
-    private boolean statusAnggota;
+    private int idAnggota;
+    private String statusAnggota = "Aktif";
 
-    public Anggota(String idAnggota, boolean statusAnggota, String nomorIdentifikasi, String namaPengguna, String kontakPengguna) {
-        super(nomorIdentifikasi, namaPengguna, kontakPengguna);
+    public Anggota() {
+    }
+    
+    public Anggota(String namaPengguna, String kontakPengguna) {
+        super(namaPengguna, kontakPengguna);
+    }
+
+    public void setIdAnggota(int idAnggota) {
         this.idAnggota = idAnggota;
+    }
+
+    public void setStatusAnggota(String statusAnggota) {
         this.statusAnggota = statusAnggota;
     }
 
-    public void setIdAnggota(String idAnggota) {
-        this.idAnggota = idAnggota;
-    }
-
-    public void setStatusAnggota(boolean statusAnggota) {
-        this.statusAnggota = statusAnggota;
-    }
-
-    public String getIdAnggota() {
+    public int getIdAnggota() {
         return idAnggota;
     }
     
-    public boolean getStatusAnggota() {
+    public String getStatusAnggota() {
         return statusAnggota;
     }
 
@@ -44,7 +48,7 @@ public class Anggota extends Pengguna{
     }
 
     @Override
-    public void setNomorIdentifikasiPengguna(String nomorIdentifikasi) {
+    public void setNomorIdentifikasiPengguna(int nomorIdentifikasi) {
         super.setNomorIdentifikasiPengguna(nomorIdentifikasi);
     }
 
@@ -59,7 +63,7 @@ public class Anggota extends Pengguna{
     }
 
     @Override
-    public String getNomorIdentifikasiPengguna() {
+    public int getNomorIdentifikasiPengguna() {
         return super.getNomorIdentifikasiPengguna();
     }
 
@@ -74,20 +78,21 @@ public class Anggota extends Pengguna{
     }
 
     @Override
-    public boolean createData() throws SQLException {
+    public int createData() throws SQLException {
         // input data ke database
+        super.createData();
         Connection dbConnection = null;
         PreparedStatement ps = null;
         int rowAffect = 0;
         
-        String querySQL = "INSERT INTO anggota(idAnggota, statusAnggota) VALUES (?,?)";
+        String querySQL = "INSERT INTO anggota(statusAnggota, nomorIdentifikasiPengguna) VALUES (?,?)";
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.idAnggota);
-            ps.setBoolean(2, this.statusAnggota);
+            ps.setString(1, this.statusAnggota);
+            ps.setInt(2, super.getNomorIdentifikasiPengguna());
 
             rowAffect = ps.executeUpdate();
             
@@ -98,16 +103,44 @@ public class Anggota extends Pengguna{
         }
         
         if (rowAffect > 0) {
-            return true;
+            return 1;
         } else {
-            return false;
+            return 1;
         }
     }
 
     @Override
-    public void readData(String query) throws SQLException {
-        super.readData("SELECT * FROM pengguna INNER JOIN anggota ON pengguna.nomorIdentifikasiPengguna = anggota.nomorIdentifikasiPengguna");
+    public List<Object[]> readData() throws SQLException {
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object[]> dataList = new ArrayList<>();
+        
+        String querySQL = "SELECT * FROM pengguna INNER JOIN anggota ON pengguna.nomorIdentifikasiPengguna = anggota.nomorIdentifikasiPengguna";
+        
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                String namaPengguna = rs.getString("namaPengguna");
+                String kontakPengguna = rs.getString("kontakPengguna");
+                String statusAnggota = rs.getString("statusAnggota");
+                
+                dataList.add(new Object[]{namaPengguna, kontakPengguna, statusAnggota});
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        return dataList;
     }
+
+
   
     @Override
     public boolean updateData() throws SQLException {
@@ -122,8 +155,8 @@ public class Anggota extends Pengguna{
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setBoolean(1, this.statusAnggota);
-            ps.setString(2, this.idAnggota);
+            ps.setString(1, this.statusAnggota);
+            ps.setInt(2, this.idAnggota);
                         
             rowAffect = ps.executeUpdate();
             

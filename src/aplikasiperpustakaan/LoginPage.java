@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package aplikasiperpustakaan;
+
+import java.security.interfaces.RSAKey;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hamas NF
@@ -28,38 +35,38 @@ public class LoginPage extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        buttonNama = new javax.swing.JTextField();
-        buttonPass = new javax.swing.JPasswordField();
+        idPetugasTF = new javax.swing.JTextField();
+        passwordTF = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        buttonLogin = new javax.swing.JButton();
+        loginButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("SELAMAT DATANG DI PERPUSTAKAAN");
 
-        buttonNama.addActionListener(new java.awt.event.ActionListener() {
+        idPetugasTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonNamaActionPerformed(evt);
+                idPetugasTFActionPerformed(evt);
             }
         });
 
-        buttonPass.addActionListener(new java.awt.event.ActionListener() {
+        passwordTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonPassActionPerformed(evt);
+                passwordTFActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Nama:");
+        jLabel2.setText("ID Petugas:");
 
         jLabel3.setText("password:");
 
-        buttonLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        buttonLogin.setText("login");
-        buttonLogin.addActionListener(new java.awt.event.ActionListener() {
+        loginButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        loginButton.setText("Login");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonLoginActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
@@ -74,20 +81,17 @@ public class LoginPage extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(65, 65, 65))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(32, 32, 32)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonNama, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonPass, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idPetugasTF, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(91, 91, 91))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(165, 165, 165)
-                .addComponent(buttonLogin)
+                .addComponent(loginButton)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -97,14 +101,14 @@ public class LoginPage extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idPetugasTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(buttonLogin)
+                .addComponent(loginButton)
                 .addGap(27, 27, 27))
         );
 
@@ -122,17 +126,31 @@ public class LoginPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNamaActionPerformed
+    private void idPetugasTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPetugasTFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonNamaActionPerformed
+    }//GEN-LAST:event_idPetugasTFActionPerformed
 
-    private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonLoginActionPerformed
+        int idPetugas = Integer.parseInt(idPetugasTF.getText());
+        String password = String.valueOf(passwordTF.getPassword());
+        Petugas petugas = new Petugas();
+        try {
+            if (petugas.loginPetugas(idPetugas, password)) {
+                petugas.setIdPetugas(idPetugas);
+                dispose();
+                new MenuPilihanPage().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "ID Petugas atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_loginButtonActionPerformed
 
-    private void buttonPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPassActionPerformed
+    private void passwordTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonPassActionPerformed
+    }//GEN-LAST:event_passwordTFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,12 +190,12 @@ public class LoginPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonLogin;
-    private javax.swing.JTextField buttonNama;
-    private javax.swing.JPasswordField buttonPass;
+    private javax.swing.JTextField idPetugasTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton loginButton;
+    private javax.swing.JPasswordField passwordTF;
     // End of variables declaration//GEN-END:variables
 }
