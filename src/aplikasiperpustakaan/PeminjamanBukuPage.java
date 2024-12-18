@@ -5,6 +5,8 @@
 package aplikasiperpustakaan;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 public class PeminjamanBukuPage extends javax.swing.JFrame {
     PinjamBuku pinjamBuku = new PinjamBuku();
     App app = new App();
+    int idPeminjaman;
     /**
      * Creates new form PeminjamanBukuPage
      */
@@ -67,13 +70,24 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
             new String [] {
                 "Id Peminjaman", "Id Petugas", "Id Anggota", "Nama Anggota", "Id Buku", "Judul", "Tanggal Peminjaman", "Tanggal Batas", "Tanggal Kembali"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        listPeminjamanBukuTable.setColumnSelectionAllowed(true);
+        listPeminjamanBukuTable.getTableHeader().setReorderingAllowed(false);
         listPeminjamanBukuTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listPeminjamanBukuTableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(listPeminjamanBukuTable);
+        listPeminjamanBukuTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         createButton.setText("Create");
         createButton.addActionListener(new java.awt.event.ActionListener() {
@@ -197,6 +211,32 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
     private void listPeminjamanBukuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listPeminjamanBukuTableMouseClicked
         // TODO add your handling code here:
+        int row = listPeminjamanBukuTable.getSelectedRow();
+        
+        if (row >= 1) {
+            int idPeminjaman = (int) listPeminjamanBukuTable.getValueAt(row, 0);
+            int idAnggota = (int) listPeminjamanBukuTable.getValueAt(row, 2);
+            int idBuku = (int) listPeminjamanBukuTable.getValueAt(row, 4);
+            int idPetugas = (int) listPeminjamanBukuTable.getValueAt(row, 1);
+            Object tanggalKembaliObj = listPeminjamanBukuTable.getValueAt(row, 8);
+            if (tanggalKembaliObj != null && tanggalKembaliObj instanceof Date) {
+                Date tanggalKembali = (Date) tanggalKembaliObj;
+
+            // Format tanggal ke String
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String tanggalKembaliString = formatter.format(tanggalKembali);
+
+            // Set nilai ke JTextField
+                tanggalKembaliTF.setText(tanggalKembaliString);
+            } else {
+                tanggalKembaliTF.setText(""); // Kosongkan jika tidak ada nilai
+            }
+            
+            idAnggotaTF.setText(String.valueOf(idAnggota));
+            idBukuTF.setText(String.valueOf(idBuku));
+            idPetugasTF.setText(String.valueOf(idPetugas));
+            setIdPeminjaman(idPeminjaman);
+        }
     }//GEN-LAST:event_listPeminjamanBukuTableMouseClicked
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
@@ -204,9 +244,9 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         int idAnggota = Integer.parseInt(idAnggotaTF.getText());
         int idBuku = Integer.parseInt(idBukuTF.getText());
         int idPetugas = Integer.parseInt(idPetugasTF.getText());
-        String tanggalKembali = tanggalKembaliTF.getText();
+//        String tanggalKembali = tanggalKembaliTF.getText();
         
-        PinjamBuku pinjamBuku = new PinjamBuku(tanggalKembali, idAnggota, idBuku, idPetugas);
+        PinjamBuku pinjamBuku = new PinjamBuku(idAnggota, idBuku, idPetugas);
 
         try {
             pinjamBuku.createData();
@@ -222,6 +262,23 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
+        int idAnggota = Integer.parseInt(idAnggotaTF.getText());
+        int idBuku = Integer.parseInt(idBukuTF.getText());
+        int idPetugas = Integer.parseInt(idPetugasTF.getText());
+        String tanggalKembali = tanggalKembaliTF.getText();
+
+        PinjamBuku pinjamBuku = new PinjamBuku(idPeminjaman, tanggalKembali, idAnggota, idBuku, idPetugas);
+
+        try {
+            pinjamBuku.updateData();
+            JOptionPane.showMessageDialog(this, "Buku berhasil diupdate!");;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Gagal mengupdate buku.", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            new PeminjamanBukuPage().setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -239,6 +296,10 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         for (Object[] rowData : dataList) {
             modelTable.addRow(rowData);
         }
+    }
+    
+        public void setIdPeminjaman(int idPeminjaman){
+            this.idPeminjaman = idPeminjaman;
     }
     /**
      * @param args the command line arguments

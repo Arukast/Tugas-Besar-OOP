@@ -143,19 +143,19 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="9" rowCount="4">
-                    <Column editable="true" title="Id Peminjaman" type="java.lang.Object"/>
-                    <Column editable="true" title="Id Petugas" type="java.lang.Object"/>
-                    <Column editable="true" title="Id Anggota" type="java.lang.Object"/>
-                    <Column editable="true" title="Nama Anggota" type="java.lang.Object"/>
-                    <Column editable="true" title="Id Buku" type="java.lang.Object"/>
-                    <Column editable="true" title="Judul" type="java.lang.Object"/>
-                    <Column editable="true" title="Tanggal Peminjaman" type="java.lang.Object"/>
-                    <Column editable="true" title="Tanggal Batas" type="java.lang.Object"/>
-                    <Column editable="true" title="Tanggal Kembali" type="java.lang.Object"/>
+                    <Column editable="false" title="Id Peminjaman" type="java.lang.Object"/>
+                    <Column editable="false" title="Id Petugas" type="java.lang.Object"/>
+                    <Column editable="false" title="Id Anggota" type="java.lang.Object"/>
+                    <Column editable="false" title="Nama Anggota" type="java.lang.Object"/>
+                    <Column editable="false" title="Id Buku" type="java.lang.Object"/>
+                    <Column editable="false" title="Judul" type="java.lang.Object"/>
+                    <Column editable="false" title="Tanggal Peminjaman" type="java.lang.Object"/>
+                    <Column editable="false" title="Tanggal Batas" type="java.lang.Object"/>
+                    <Column editable="false" title="Tanggal Kembali" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                  <TableColumnModel selectionModel="0">
+                  <TableColumnModel selectionModel="1">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -203,8 +203,9 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                  <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
               <Events>

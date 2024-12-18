@@ -21,7 +21,7 @@ public class PinjamBuku implements DataManajemen {
     private int idPeminjamanBuku;
     private String tanggalPeminjamanBuku;
     private String tenggatTanggalPengembalianBuku;
-    private String tanggalPengembalianBuku;
+    private String tanggalPengembalianBuku = null;
     Anggota anggota = new Anggota();
     Buku buku = new Buku();
     Petugas petugas = new Petugas();
@@ -29,8 +29,15 @@ public class PinjamBuku implements DataManajemen {
 
     public PinjamBuku() {
     }
+    
+    public PinjamBuku(int idAnggota, int idBuku, int idPetugas) {
+        anggota.setIdAnggota(idAnggota);
+        buku.setIdBuku(idBuku);
+        petugas.setIdPetugas(idPetugas);
+    }
 
-    public PinjamBuku(String tanggalPengembalianBuku, int idAnggota, int idBuku, int idPetugas) {
+    public PinjamBuku(int idPeminjaman, String tanggalPengembalianBuku, int idAnggota, int idBuku, int idPetugas) {
+        this.idPeminjamanBuku = idPeminjaman;
         anggota.setIdAnggota(idAnggota);
         buku.setIdBuku(idBuku);
         petugas.setIdPetugas(idPetugas);
@@ -76,7 +83,7 @@ public class PinjamBuku implements DataManajemen {
         PreparedStatement ps = null;
         int rowAffect = 0;
         
-        String querySQL = "INSERT INTO pinjamBuku(idAnggota, idBuku, idPetugas, tanggalPeminjamanBuku, tenggatTanggalPengembalianBuku, tanggalPengembalianBuku) VALUES (?,?,?,?,?,?)";
+        String querySQL = "INSERT INTO pinjamBuku(idAnggota, idBuku, idPetugas, tanggalPeminjamanBuku, tenggatTanggalPengembalianBuku) VALUES (?,?,?,?,?)";
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
@@ -89,7 +96,7 @@ public class PinjamBuku implements DataManajemen {
             ps.setInt(3, petugas.getIdPetugas());
             ps.setDate(4, Date.valueOf(LocalDate.now()));
             ps.setDate(5, Date.valueOf(LocalDate.now().plusDays(7)));
-            ps.setDate(6, Date.valueOf(LocalDate.parse(this.tanggalPengembalianBuku)));
+//            ps.setDate(6, Date.valueOf(LocalDate.parse(this.tanggalPengembalianBuku)));
 
             rowAffect = ps.executeUpdate();
             
@@ -113,7 +120,11 @@ public class PinjamBuku implements DataManajemen {
         ResultSet rs = null;
         List<Object[]> dataList = new ArrayList<>();
         
-        String querySQL = "SELECT * FROM buku INNER JOIN bukufiksi ON buku.idBuku = bukuFiksi.idBuku";
+        String querySQL = "SELECT idPeminjamanBuku, idPetugas, anggota.idAnggota, pengguna.namaPengguna, buku.idBuku, buku.judulBuku, tanggalPeminjamanBuku, tenggatTanggalPengembalianBuku, tanggalPengembalianBuku\n" +
+"FROM pinjambuku\n" +
+"INNER JOIN anggota ON pinjambuku.idAnggota = anggota.idAnggota\n" +
+"INNER JOIN pengguna ON pengguna.nomorIdentifikasiPengguna = anggota.nomorIdentifikasiPengguna\n" +
+"INNER JOIN buku ON pinjambuku.idBuku = buku.idBuku;";
         
         try {
             kdb.bukaKoneksi();
@@ -123,14 +134,18 @@ public class PinjamBuku implements DataManajemen {
             rs = ps.executeQuery();
             
             while (rs.next()) {
+                int idPeminjaman = rs.getInt("idPeminjamanBuku");
+                int idPetugas = rs.getInt("idPetugas");
+                int idAnggota = rs.getInt("idAnggota");
+                String namaAnggota = rs.getString("namaPengguna");
                 int idBuku = rs.getInt("idBuku");
                 String judulBuku = rs.getString("judulBuku");
-                String penulisBuku = rs.getString("penulisBuku");
-                String bahasaBuku = rs.getString("bahasaBuku");
-                String subGenrebuku = rs.getString("subGenreBuku");
-                int jumlahBuku = rs.getInt("jumlahBuku");
+                String tanggalPeminjaman = rs.getString("tanggalPeminjamanBuku");
+                String tanggalBatas = rs.getString("tenggatTanggalPengembalianBuku");
+                String tanggalPengembalian = rs.getString("tanggalPengembalianBuku");
                 
-                dataList.add(new Object[]{idBuku, judulBuku, penulisBuku, subGenrebuku, bahasaBuku, jumlahBuku});
+                
+                dataList.add(new Object[]{idPeminjaman, idPetugas, idAnggota, namaAnggota, idBuku, judulBuku, tanggalPeminjaman, tanggalBatas, tanggalPengembalian});
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -155,10 +170,11 @@ public class PinjamBuku implements DataManajemen {
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.tanggalPeminjamanBuku);
-            ps.setString(2, this.tenggatTanggalPengembalianBuku);
-            ps.setString(3, this.tanggalPengembalianBuku);
-            ps.setInt(4, this.idPeminjamanBuku);
+            ps.setInt(1, anggota.getIdAnggota());
+            ps.setInt(2, buku.getIdBuku());
+            ps.setInt(3, petugas.getIdPetugas());
+            ps.setDate(4, Date.valueOf(this.tanggalPengembalianBuku));
+            ps.setInt(5, this.idPeminjamanBuku);
             
             rowAffect = ps.executeUpdate();
             

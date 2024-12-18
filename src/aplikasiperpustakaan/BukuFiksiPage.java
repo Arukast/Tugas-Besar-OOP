@@ -304,7 +304,6 @@ public class BukuFiksiPage extends javax.swing.JFrame {
             subGenreTopikTF.setText(subGenreTopikBuku);
             bahasaTF.setText(bahasaBuku);
             jumlahTF.setText(String.valueOf(jumlahBuku));
-            System.out.println(idBuku);
             setIdBuku(idBuku);
         }
     }//GEN-LAST:event_listBukuFiksiTableMouseClicked
