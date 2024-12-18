@@ -5,9 +5,12 @@
 package aplikasiperpustakaan;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,23 +18,26 @@ import java.util.List;
  * @author Tubagus Alta
  */
 public class PinjamBuku implements DataManajemen {
-    private String idPeminjamanBuku;
+    private int idPeminjamanBuku;
     private String tanggalPeminjamanBuku;
     private String tenggatTanggalPengembalianBuku;
-    private boolean bukuSudahkembali = false;
     private String tanggalPengembalianBuku;
+    Anggota anggota = new Anggota();
+    Buku buku = new Buku();
+    Petugas petugas = new Petugas();
     KoneksiDB kdb = new KoneksiDB();
 
+    public PinjamBuku() {
+    }
 
-    public PinjamBuku(String idPinjamBuku, String tanggalPinjamBuku, String tenggatTanggalPengembalianBuku, boolean bukuSudahkembali, String tanggalPengembalianBuku) {
-        this.idPeminjamanBuku = idPinjamBuku;
-        this.tanggalPeminjamanBuku = tanggalPinjamBuku;
-        this.tenggatTanggalPengembalianBuku = tenggatTanggalPengembalianBuku;
-        this.bukuSudahkembali = bukuSudahkembali;
+    public PinjamBuku(String tanggalPengembalianBuku, int idAnggota, int idBuku, int idPetugas) {
+        anggota.setIdAnggota(idAnggota);
+        buku.setIdBuku(idBuku);
+        petugas.setIdPetugas(idPetugas);
         this.tanggalPengembalianBuku = tanggalPengembalianBuku;
     }
 
-    public void setIdPeminjamanBuku(String idPeminjamanBuku) {
+    public void setIdPeminjamanBuku(int idPeminjamanBuku) {
         this.idPeminjamanBuku = idPeminjamanBuku;
     }
 
@@ -47,11 +53,7 @@ public class PinjamBuku implements DataManajemen {
         this.tanggalPengembalianBuku = tanggalPengembalianBuku;
     }
 
-    public void setBukuSudahkembali(boolean bukuSudahkembali) {
-        this.bukuSudahkembali = bukuSudahkembali;
-    }
-
-    public String getIdPeminjamanBuku() {
+    public int getIdPeminjamanBuku() {
         return idPeminjamanBuku;
     }
 
@@ -66,10 +68,6 @@ public class PinjamBuku implements DataManajemen {
     public String getTanggalPengembalianBuku() {
         return tanggalPengembalianBuku;
     }
-    
-    public boolean getBukuSudahkembali() {
-        return bukuSudahkembali;
-    }
 
     @Override
     public int createData() throws SQLException {
@@ -78,16 +76,20 @@ public class PinjamBuku implements DataManajemen {
         PreparedStatement ps = null;
         int rowAffect = 0;
         
-        String querySQL = "INSERT INTO pinjamBuku(tanggalPeminjamanBuku, tenggatTanggalPengembalianBuku, bukuSudahKembali, tanggalPengembalianBuku) VALUES (?,?,?,?)";
+        String querySQL = "INSERT INTO pinjamBuku(idAnggota, idBuku, idPetugas, tanggalPeminjamanBuku, tenggatTanggalPengembalianBuku, tanggalPengembalianBuku) VALUES (?,?,?,?,?,?)";
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.tanggalPeminjamanBuku);
-            ps.setString(2, this.tenggatTanggalPengembalianBuku);
-            ps.setBoolean(3, this.bukuSudahkembali);
-            ps.setString(4, this.tanggalPengembalianBuku);
+            ps.setInt(1, anggota.getIdAnggota());
+            System.out.println(anggota.getIdAnggota());
+            ps.setInt(2, buku.getIdBuku());
+            System.out.println(buku.getIdBuku());
+            ps.setInt(3, petugas.getIdPetugas());
+            ps.setDate(4, Date.valueOf(LocalDate.now()));
+            ps.setDate(5, Date.valueOf(LocalDate.now().plusDays(7)));
+            ps.setDate(6, Date.valueOf(LocalDate.parse(this.tanggalPengembalianBuku)));
 
             rowAffect = ps.executeUpdate();
             
@@ -100,13 +102,42 @@ public class PinjamBuku implements DataManajemen {
         if (rowAffect > 0) {
             return 1;
         } else {
-            return 1;
+            return 0;
         }
     }
 
     @Override
     public List<Object[]> readData() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection dbConnection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Object[]> dataList = new ArrayList<>();
+        
+        String querySQL = "SELECT * FROM buku INNER JOIN bukufiksi ON buku.idBuku = bukuFiksi.idBuku";
+        
+        try {
+            kdb.bukaKoneksi();
+            dbConnection = kdb.getConnection();
+                    
+            ps = dbConnection.prepareStatement(querySQL);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                int idBuku = rs.getInt("idBuku");
+                String judulBuku = rs.getString("judulBuku");
+                String penulisBuku = rs.getString("penulisBuku");
+                String bahasaBuku = rs.getString("bahasaBuku");
+                String subGenrebuku = rs.getString("subGenreBuku");
+                int jumlahBuku = rs.getInt("jumlahBuku");
+                
+                dataList.add(new Object[]{idBuku, judulBuku, penulisBuku, subGenrebuku, bahasaBuku, jumlahBuku});
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            ps.close();
+        }
+        return dataList;
     }
 
 
@@ -118,7 +149,7 @@ public class PinjamBuku implements DataManajemen {
         PreparedStatement ps = null;
         int rowAffect = 0;
         
-        String querySQL = "UPDATE pinjamBuku SET tanggalPeminjamanBuku = ?, tenggatTanggalPengembalianBuku = ?, bukuSudahKembali = ?, tanggalPengembalianBuku = ? WHERE idPeminjamanBuku = ?";
+        String querySQL = "UPDATE pinjamBuku SET idAnggota = ?, idBuku = ?, idPetugas = ?, tanggalPengembalianBuku = ? WHERE idPeminjamanBuku = ?";
         try {
             kdb.bukaKoneksi();
             dbConnection = kdb.getConnection();
@@ -126,9 +157,8 @@ public class PinjamBuku implements DataManajemen {
             ps = dbConnection.prepareStatement(querySQL);
             ps.setString(1, this.tanggalPeminjamanBuku);
             ps.setString(2, this.tenggatTanggalPengembalianBuku);
-            ps.setBoolean(3, this.bukuSudahkembali);
-            ps.setString(4, this.tanggalPengembalianBuku);
-            ps.setString(5, this.idPeminjamanBuku);
+            ps.setString(3, this.tanggalPengembalianBuku);
+            ps.setInt(4, this.idPeminjamanBuku);
             
             rowAffect = ps.executeUpdate();
             
@@ -158,7 +188,7 @@ public class PinjamBuku implements DataManajemen {
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setString(1, this.idPeminjamanBuku);
+            ps.setInt(1, this.idPeminjamanBuku);
             
             rowAffect = ps.executeUpdate();
             

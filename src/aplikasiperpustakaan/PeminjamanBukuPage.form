@@ -55,7 +55,7 @@
                           <Group type="103" groupAlignment="2" attributes="0">
                               <Component id="jLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="tanggalPeminjamanTF" alignment="0" min="-2" pref="292" max="-2" attributes="0"/>
+                              <Component id="idPetugasTF" alignment="0" min="-2" pref="292" max="-2" attributes="0"/>
                               <Component id="idAnggotaTF" alignment="0" min="-2" pref="292" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="82" max="32767" attributes="0"/>
@@ -116,7 +116,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="tanggalPeminjamanTF" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idPetugasTF" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tanggalKembaliTF" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -230,12 +230,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="idAnggotaTF">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Masukkan Id Anggota"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="idAnggotaTFActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -248,12 +242,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="idBukuTF">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Masukkan Id Buku"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="idBukuTFActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="backButton">
           <Properties>
@@ -269,12 +257,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tanggalKembaliTF">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Masukkan Tanggal Kembali"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tanggalKembaliTFActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -286,16 +268,10 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tanggal Peminjaman"/>
+            <Property name="text" type="java.lang.String" value="Id Petugas"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tanggalPeminjamanTF">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Masukkan Tanggal Peminjaman"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tanggalPeminjamanTFActionPerformed"/>
-          </Events>
+        <Component class="javax.swing.JTextField" name="idPetugasTF">
         </Component>
       </SubComponents>
     </Container>

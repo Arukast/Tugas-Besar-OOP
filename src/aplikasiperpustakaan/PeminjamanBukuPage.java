@@ -4,20 +4,32 @@
  */
 package aplikasiperpustakaan;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Tubagus Alta
  */
 public class PeminjamanBukuPage extends javax.swing.JFrame {
-
+    PinjamBuku pinjamBuku = new PinjamBuku();
+    App app = new App();
     /**
      * Creates new form PeminjamanBukuPage
      */
     public PeminjamanBukuPage() {
         initComponents();
         setLocationRelativeTo(null);
+        try {
+            tampilListBukuTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null,ex);
+        }
     }
 
     /**
@@ -41,7 +53,7 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         tanggalKembaliTF = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        tanggalPeminjamanTF = new javax.swing.JTextField();
+        idPetugasTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,23 +89,9 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
             }
         });
 
-        idAnggotaTF.setText("Masukkan Id Anggota");
-        idAnggotaTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idAnggotaTFActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("Id Anggota");
 
         jLabel2.setText("Id Buku");
-
-        idBukuTF.setText("Masukkan Id Buku");
-        idBukuTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idBukuTFActionPerformed(evt);
-            }
-        });
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -104,24 +102,10 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
         jLabel4.setText("Tanggal Kembali");
 
-        tanggalKembaliTF.setText("Masukkan Tanggal Kembali");
-        tanggalKembaliTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tanggalKembaliTFActionPerformed(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Peminjaman Buku");
 
-        jLabel7.setText("Tanggal Peminjaman");
-
-        tanggalPeminjamanTF.setText("Masukkan Tanggal Peminjaman");
-        tanggalPeminjamanTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tanggalPeminjamanTFActionPerformed(evt);
-            }
-        });
+        jLabel7.setText("Id Petugas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,7 +126,7 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel1)
                             .addComponent(jLabel7)
-                            .addComponent(tanggalPeminjamanTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idPetugasTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(idAnggotaTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +170,7 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tanggalPeminjamanTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idPetugasTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tanggalKembaliTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -217,32 +201,45 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
+        int idAnggota = Integer.parseInt(idAnggotaTF.getText());
+        int idBuku = Integer.parseInt(idBukuTF.getText());
+        int idPetugas = Integer.parseInt(idPetugasTF.getText());
+        String tanggalKembali = tanggalKembaliTF.getText();
+        
+        PinjamBuku pinjamBuku = new PinjamBuku(tanggalKembali, idAnggota, idBuku, idPetugas);
+
+        try {
+            pinjamBuku.createData();
+            JOptionPane.showMessageDialog(this, "Buku berhasil ditambahkan!");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Gagal menambahkan buku.", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            new PeminjamanBukuPage().setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_updateButtonActionPerformed
 
-    private void idAnggotaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idAnggotaTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idAnggotaTFActionPerformed
-
-    private void idBukuTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idBukuTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idBukuTFActionPerformed
-
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        new MenuPilihanPage().setVisible(true);
+        dispose();
     }//GEN-LAST:event_backButtonActionPerformed
-
-    private void tanggalPeminjamanTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanggalPeminjamanTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanggalPeminjamanTFActionPerformed
-
-    private void tanggalKembaliTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanggalKembaliTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanggalKembaliTFActionPerformed
-
+    
+    public void tampilListBukuTable() throws SQLException{
+        DefaultTableModel modelTable = (DefaultTableModel) listPeminjamanBukuTable.getModel();
+        modelTable.setRowCount(0);
+        
+        List<Object[]> dataList = pinjamBuku.readData();
+        
+        for (Object[] rowData : dataList) {
+            modelTable.addRow(rowData);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -285,6 +282,7 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
     private javax.swing.JButton createButton;
     private javax.swing.JTextField idAnggotaTF;
     private javax.swing.JTextField idBukuTF;
+    private javax.swing.JTextField idPetugasTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -294,7 +292,6 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listPeminjamanBukuTable;
     private javax.swing.JTextField tanggalKembaliTF;
-    private javax.swing.JTextField tanggalPeminjamanTF;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

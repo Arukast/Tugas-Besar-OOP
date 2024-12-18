@@ -33,6 +33,7 @@ public class MenuPilihanPage extends javax.swing.JFrame {
         daftarAnggotaButton = new javax.swing.JButton();
         listBukuButton = new javax.swing.JButton();
         logoutButton = new javax.swing.JButton();
+        pinjamBukuButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,6 +63,13 @@ public class MenuPilihanPage extends javax.swing.JFrame {
             }
         });
 
+        pinjamBukuButton.setText("Pinjam Buku");
+        pinjamBukuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pinjamBukuButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -73,7 +81,8 @@ public class MenuPilihanPage extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(daftarAnggotaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(listBukuButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pinjamBukuButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(136, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -87,9 +96,11 @@ public class MenuPilihanPage extends javax.swing.JFrame {
                 .addComponent(daftarAnggotaButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(listBukuButton)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(pinjamBukuButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(logoutButton)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -100,7 +111,7 @@ public class MenuPilihanPage extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -123,6 +134,12 @@ public class MenuPilihanPage extends javax.swing.JFrame {
         new AnggotaListPage().setVisible(true);
         dispose();
     }//GEN-LAST:event_daftarAnggotaButtonActionPerformed
+
+    private void pinjamBukuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pinjamBukuButtonActionPerformed
+        // TODO add your handling code here:
+        new PeminjamanBukuPage().setVisible(rootPaneCheckingEnabled);
+        dispose();
+    }//GEN-LAST:event_pinjamBukuButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,5 +184,6 @@ public class MenuPilihanPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton listBukuButton;
     private javax.swing.JButton logoutButton;
+    private javax.swing.JButton pinjamBukuButton;
     // End of variables declaration//GEN-END:variables
 }
