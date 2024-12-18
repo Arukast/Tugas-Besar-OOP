@@ -144,6 +144,7 @@ public class LoginPage extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "ID Petugas atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "ID Petugas atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loginButtonActionPerformed

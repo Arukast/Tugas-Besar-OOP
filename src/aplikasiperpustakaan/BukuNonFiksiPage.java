@@ -275,7 +275,7 @@ public class BukuNonFiksiPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         int row = listBukuNonFiksiTable.getSelectedRow();
         
-        if (row != 1) {
+        if (row >= 0) {
             int idBuku = (int) listBukuNonFiksiTable.getValueAt(row, 0);
             String judulBuku = listBukuNonFiksiTable.getValueAt(row, 1).toString();
             String penulisBuku = listBukuNonFiksiTable.getValueAt(row, 2).toString();

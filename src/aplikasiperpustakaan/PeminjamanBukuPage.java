@@ -213,7 +213,7 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         int row = listPeminjamanBukuTable.getSelectedRow();
         
-        if (row >= 1) {
+        if (row >= 0) {
             int idPeminjaman = (int) listPeminjamanBukuTable.getValueAt(row, 0);
             int idAnggota = (int) listPeminjamanBukuTable.getValueAt(row, 2);
             int idBuku = (int) listPeminjamanBukuTable.getValueAt(row, 4);
@@ -250,9 +250,9 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
         try {
             pinjamBuku.createData();
-            JOptionPane.showMessageDialog(this, "Buku berhasil ditambahkan!");
+            JOptionPane.showMessageDialog(this, "Peminjaman berhasil ditambahkan!");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal menambahkan buku.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Gagal menambahkan peminjaman.", "Error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             new PeminjamanBukuPage().setVisible(true);
@@ -271,9 +271,9 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
         try {
             pinjamBuku.updateData();
-            JOptionPane.showMessageDialog(this, "Buku berhasil diupdate!");;
+            JOptionPane.showMessageDialog(this, "Peminjaman berhasil diupdate!");;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal mengupdate buku.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Gagal mengupdate peminjaman.", "Error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             new PeminjamanBukuPage().setVisible(true);

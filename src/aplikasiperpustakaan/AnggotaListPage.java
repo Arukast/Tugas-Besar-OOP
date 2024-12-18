@@ -220,11 +220,12 @@ public class AnggotaListPage extends javax.swing.JFrame {
                 anggota.createData();
                 System.out.println("tses");
 
-                JOptionPane.showMessageDialog(this, "Buku berhasil ditambahkan!");
+                JOptionPane.showMessageDialog(this, "Anggota berhasil ditambahkan!");
             } else {
-                JOptionPane.showMessageDialog(this, "Gagal menambahkan buku.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Gagal menambahkan Anggota.", "Error", JOptionPane.ERROR_MESSAGE);
             }            
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Gagal menambahkan Anggota.", "Error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             new AnggotaListPage().setVisible(true);

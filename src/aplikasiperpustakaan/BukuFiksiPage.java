@@ -291,7 +291,7 @@ public class BukuFiksiPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         int row = listBukuFiksiTable.getSelectedRow();
         
-        if (row != 1) {
+        if (row >= 0) {
             int idBuku = (int) listBukuFiksiTable.getValueAt(row, 0);
             String judulBuku = listBukuFiksiTable.getValueAt(row, 1).toString();
             String penulisBuku = listBukuFiksiTable.getValueAt(row, 2).toString();

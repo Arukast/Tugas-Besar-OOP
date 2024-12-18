@@ -29,9 +29,7 @@ public class App {
     }
     
     public static void main(String[] args) throws SQLException {
-//        LoginPage loginPage = new LoginPage();
-//        loginPage.setVisible(true);
-        MenuPilihanPage menu = new MenuPilihanPage();
-        menu.setVisible(true);
+        LoginPage loginPage = new LoginPage();
+        loginPage.setVisible(true);
     }
 }
