@@ -36,8 +36,8 @@ public class PinjamBuku implements DataManajemen {
         petugas.setIdPetugas(idPetugas);
     }
 
-    public PinjamBuku(int idPeminjaman, String tanggalPengembalianBuku, int idAnggota, int idBuku, int idPetugas) {
-        this.idPeminjamanBuku = idPeminjaman;
+    public PinjamBuku(int idPeminjamanBuku, String tanggalPengembalianBuku, int idAnggota, int idBuku, int idPetugas) {
+        this.idPeminjamanBuku = idPeminjamanBuku;
         anggota.setIdAnggota(idAnggota);
         buku.setIdBuku(idBuku);
         petugas.setIdPetugas(idPetugas);

@@ -6,7 +6,6 @@ package aplikasiperpustakaan;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,30 +38,6 @@ public class BukuNonFiksi extends Buku {
     public String getTopikBuku() {
         return topikBuku;
     }
-    
-    public void tampilkanDetailBukuFiksi()throws SQLException {
-                // input data ke database
-        Connection dbConnection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        String querySQL = "";
-        try {
-            kdb.bukaKoneksi();
-            dbConnection = kdb.getConnection();
-                    
-            ps = dbConnection.prepareStatement(querySQL);
-            rs = ps.executeQuery();
-            
-            //TODO: Ada lanjutan
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            ps.close();
-        }
-    }
-
     
     @Override
     public int createData() throws SQLException {

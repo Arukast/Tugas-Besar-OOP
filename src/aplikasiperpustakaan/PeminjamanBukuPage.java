@@ -298,8 +298,8 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         }
     }
     
-        public void setIdPeminjaman(int idPeminjaman){
-            this.idPeminjaman = idPeminjaman;
+    public void setIdPeminjaman(int idPeminjaman){
+        this.idPeminjaman = idPeminjaman;
     }
     /**
      * @param args the command line arguments

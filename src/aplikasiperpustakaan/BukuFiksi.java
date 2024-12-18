@@ -4,11 +4,9 @@
  */
 package aplikasiperpustakaan;
 
-import com.mysql.cj.xdevapi.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,37 +31,12 @@ public class BukuFiksi extends Buku {
         this.subGenreBuku = subGenreBuku;
     }
     
-    
-
     public void setSubGenreBuku(String subGenreBuku) {
         this.subGenreBuku = subGenreBuku;
     }
 
     public String getSubGenreBuku() {
         return subGenreBuku;
-    }
-    
-    public void tampilkanDetailBukuFiksi()throws SQLException {
-                // input data ke database
-        Connection dbConnection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        String querySQL = "";
-        try {
-            kdb.bukaKoneksi();
-            dbConnection = kdb.getConnection();
-                    
-            ps = dbConnection.prepareStatement(querySQL);
-            rs = ps.executeQuery();
-            
-            //TODO: Ada lanjutan
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            ps.close();
-        }
     }
     
     @Override

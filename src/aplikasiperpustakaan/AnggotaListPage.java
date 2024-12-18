@@ -80,12 +80,6 @@ public class AnggotaListPage extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Nomor Kontak:");
 
-        namaAnggotaTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                namaAnggotaTFActionPerformed(evt);
-            }
-        });
-
         listAnggotaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -158,7 +152,6 @@ public class AnggotaListPage extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(backButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
@@ -233,10 +226,6 @@ public class AnggotaListPage extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_addMemberButtonActionPerformed
-
-    private void namaAnggotaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaAnggotaTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_namaAnggotaTFActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:

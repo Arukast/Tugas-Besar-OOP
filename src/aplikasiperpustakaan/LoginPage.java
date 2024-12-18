@@ -46,18 +46,6 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("SELAMAT DATANG DI PERPUSTAKAAN");
 
-        idPetugasTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idPetugasTFActionPerformed(evt);
-            }
-        });
-
-        passwordTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTFActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("ID Petugas:");
 
         jLabel3.setText("password:");
@@ -126,10 +114,6 @@ public class LoginPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void idPetugasTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPetugasTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idPetugasTFActionPerformed
-
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
         int idPetugas = Integer.parseInt(idPetugasTF.getText());
@@ -148,10 +132,6 @@ public class LoginPage extends javax.swing.JFrame {
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
-
-    private void passwordTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTFActionPerformed
 
     /**
      * @param args the command line arguments
