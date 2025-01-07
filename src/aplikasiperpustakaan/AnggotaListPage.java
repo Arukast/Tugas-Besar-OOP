@@ -5,6 +5,7 @@
 package aplikasiperpustakaan;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -195,36 +196,42 @@ public class AnggotaListPage extends javax.swing.JFrame {
 
     private void addMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberButtonActionPerformed
         // TODO add your handling code here:
+        ArrayList<String> textFields = new ArrayList<>();
         String namaAnggota = namaAnggotaTF.getText();
+        textFields.add(namaAnggota);
         String kontakPengguna = nomorKontakTF.getText();
+        textFields.add(kontakPengguna);
         
-        Pengguna pengguna = new Pengguna(namaAnggota, kontakPengguna) {
-            @Override
-            public void tampilkanDataPengguna() {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-            }
-        };
-        Anggota anggota = new Anggota();
-        try {
-            int nomorIdentifikasi = pengguna.createData();
-            System.out.println(nomorIdentifikasi);
-            if (nomorIdentifikasi != -1) {
-                anggota.setNomorIdentifikasiPengguna(nomorIdentifikasi);
-                anggota.createData();
-                System.out.println("tses");
+        if (App.areAnyFieldsEmpty(textFields)) {
+            JOptionPane.showMessageDialog(this, "Semua Text Field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Pengguna pengguna = new Pengguna(namaAnggota, kontakPengguna) {
+                @Override
+                public void tampilkanDataPengguna() {
+                    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                }
+            };
+            Anggota anggota = new Anggota();
+            try {
+                int nomorIdentifikasi = pengguna.createData();
+                System.out.println(nomorIdentifikasi);
+                if (nomorIdentifikasi != -1) {
+                    anggota.setNomorIdentifikasiPengguna(nomorIdentifikasi);
+                    anggota.createData();
+                    System.out.println("tses");
 
-                JOptionPane.showMessageDialog(this, "Anggota berhasil ditambahkan!");
-            } else {
+                    JOptionPane.showMessageDialog(this, "Anggota berhasil ditambahkan!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Gagal menambahkan Anggota.", "Error", JOptionPane.ERROR_MESSAGE);
+                }            
+            } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Gagal menambahkan Anggota.", "Error", JOptionPane.ERROR_MESSAGE);
-            }            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal menambahkan Anggota.", "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            new AnggotaListPage().setVisible(true);
-            dispose();
+                Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                new AnggotaListPage().setVisible(true);
+                dispose();
+            }
         }
-        
     }//GEN-LAST:event_addMemberButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed

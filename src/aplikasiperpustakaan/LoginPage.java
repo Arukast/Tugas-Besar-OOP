@@ -116,20 +116,19 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        int idPetugas = Integer.parseInt(idPetugasTF.getText());
-        String password = String.valueOf(passwordTF.getPassword());
-        Petugas petugas = new Petugas();
         try {
-            if (petugas.loginPetugas(idPetugas, password)) {
+            int idPetugas = Integer.parseInt(idPetugasTF.getText());
+            String password = String.valueOf(passwordTF.getPassword());
+            Petugas petugas = new Petugas(idPetugas, password);
+            if (petugas.loginPetugas()) {
                 petugas.setIdPetugas(idPetugas);
                 dispose();
                 new MenuPilihanPage().setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "ID Petugas atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (SQLException ex) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "ID Petugas atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 

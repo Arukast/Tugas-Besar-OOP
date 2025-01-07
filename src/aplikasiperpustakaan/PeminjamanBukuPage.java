@@ -6,6 +6,7 @@ package aplikasiperpustakaan;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,16 +48,16 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         listPeminjamanBukuTable = new javax.swing.JTable();
         createButton = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
-        idAnggotaTF = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        idBukuTF = new javax.swing.JTextField();
         backButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         tanggalKembaliTF = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        idAnggotaTF = new javax.swing.JTextField();
         idPetugasTF = new javax.swing.JTextField();
+        idBukuTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,44 +122,59 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
         jLabel7.setText("Id Petugas");
 
+        idPetugasTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idPetugasTFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(backButton)
                 .addGap(212, 212, 212)
                 .addComponent(jLabel5)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(130, 130, 130))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
+                        .addComponent(updateButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(createButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel7)
-                            .addComponent(idPetugasTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(idAnggotaTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                        .addComponent(idPetugasTF, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                        .addComponent(tanggalKembaliTF, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(115, 115, 115)
+                                .addComponent(jLabel7))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(idAnggotaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(105, 105, 105)
+                                .addComponent(idBukuTF))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tanggalKembaliTF, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(idBukuTF, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(updateButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(createButton)))
-                                .addGap(17, 17, 17))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel4)
-                                .addGap(105, 105, 105))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(130, 130, 130))))))
+                                .addGap(87, 87, 87)))))
+                .addGap(17, 17, 17))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,23 +191,23 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(backButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(idBukuTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idAnggotaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idAnggotaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idBukuTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel4))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idPetugasTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tanggalKembaliTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tanggalKembaliTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idPetugasTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton)
                     .addComponent(createButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -241,43 +257,81 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
-        int idAnggota = Integer.parseInt(idAnggotaTF.getText());
-        int idBuku = Integer.parseInt(idBukuTF.getText());
-        int idPetugas = Integer.parseInt(idPetugasTF.getText());
-//        String tanggalKembali = tanggalKembaliTF.getText();
-        
-        PinjamBuku pinjamBuku = new PinjamBuku(idAnggota, idBuku, idPetugas);
-
         try {
-            pinjamBuku.createData();
-            JOptionPane.showMessageDialog(this, "Peminjaman berhasil ditambahkan!");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal menambahkan peminjaman.", "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            new PeminjamanBukuPage().setVisible(true);
-            dispose();
+            ArrayList<String> textFields = new ArrayList<>();
+            String idAnggotaString = idAnggotaTF.getText();
+            textFields.add(idAnggotaString);
+            String idBukuString = idBukuTF.getText();
+            textFields.add(idBukuString);
+            String idPetugasString = idPetugasTF.getText();
+            textFields.add(idPetugasString);
+
+            if (App.areAnyFieldsEmpty(textFields)) {
+                    JOptionPane.showMessageDialog(this, "Semua Field harus diisi kecuali Text Field Tanggal Kembali!", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                int idAnggota = Integer.parseInt(idAnggotaString);
+                int idBuku = Integer.parseInt(idBukuString);
+                int idPetugas = Integer.parseInt(idPetugasString);
+                String tanggalKembali = tanggalKembaliTF.getText();
+
+                PinjamBuku pinjamBuku = new PinjamBuku(idPeminjaman, tanggalKembali, idAnggota, idBuku, idPetugas);
+
+                try {
+                    if (pinjamBuku.createData() == 1) {
+                        JOptionPane.showMessageDialog(this, "Peminjaman berhasil ditambahkan!");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Gagal menambahkan peminjaman! Pastikan semua Text Field terisi dengan benar dan format Tanggal adalah YYYY-MM-DD", "Error", JOptionPane.ERROR_MESSAGE);
+                    }    
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Gagal menambahkan peminjaman! Pastikan semua Text Field terisi dengan benar dan format Tanggal adalah YYYY-MM-DD", "Error", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    new PeminjamanBukuPage().setVisible(true);
+                    dispose();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Tolong masukkan angka dalam Text Field Id Anggota, Id buku, Id Petugas, dan Tanggal Kembali!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
-        int idAnggota = Integer.parseInt(idAnggotaTF.getText());
-        int idBuku = Integer.parseInt(idBukuTF.getText());
-        int idPetugas = Integer.parseInt(idPetugasTF.getText());
-        String tanggalKembali = tanggalKembaliTF.getText();
-
-        PinjamBuku pinjamBuku = new PinjamBuku(idPeminjaman, tanggalKembali, idAnggota, idBuku, idPetugas);
-
         try {
-            pinjamBuku.updateData();
-            JOptionPane.showMessageDialog(this, "Peminjaman berhasil diupdate!");;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal mengupdate peminjaman.", "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            new PeminjamanBukuPage().setVisible(true);
-            dispose();
+            ArrayList<String> textFields = new ArrayList<>();
+            String idAnggotaString = idAnggotaTF.getText();
+            textFields.add(idAnggotaString);
+            String idBukuString = idBukuTF.getText();
+            textFields.add(idBukuString);
+            String idPetugasString = idPetugasTF.getText();
+            textFields.add(idPetugasString);
+
+            if (App.areAnyFieldsEmpty(textFields)) {
+                    JOptionPane.showMessageDialog(this, "Semua Field harus diisi kecuali Text Field Tanggal Kembali!", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                int idAnggota = Integer.parseInt(idAnggotaString);
+                int idBuku = Integer.parseInt(idBukuString);
+                int idPetugas = Integer.parseInt(idPetugasString);
+                String tanggalKembali = tanggalKembaliTF.getText();
+
+                PinjamBuku pinjamBuku = new PinjamBuku(idPeminjaman, tanggalKembali, idAnggota, idBuku, idPetugas);
+
+                try {
+                    if (pinjamBuku.updateData()) {
+                        JOptionPane.showMessageDialog(this, "Peminjaman berhasil diupdate!");;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Gagal mengupdate peminjaman! Pastikan semua Text Field terisi dengan benar dan format Tanggal adalah YYYY-MM-DD", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Gagal mengupdate peminjaman! Pastikan semua Text Field terisi dengan benar dan format Tanggal adalah YYYY-MM-DD", "Error", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    new PeminjamanBukuPage().setVisible(true);
+                    dispose();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Tolong masukkan angka dalam Text Field Id Anggota, Id buku, Id Petugas, dan Tanggal Kembali!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 
@@ -286,6 +340,10 @@ public class PeminjamanBukuPage extends javax.swing.JFrame {
         new MenuPilihanPage().setVisible(true);
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void idPetugasTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPetugasTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idPetugasTFActionPerformed
     
     public void tampilListBukuTable() throws SQLException{
         DefaultTableModel modelTable = (DefaultTableModel) listPeminjamanBukuTable.getModel();

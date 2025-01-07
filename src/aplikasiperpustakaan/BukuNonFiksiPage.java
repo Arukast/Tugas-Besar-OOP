@@ -5,6 +5,7 @@
 package aplikasiperpustakaan;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,9 @@ public class BukuNonFiksiPage extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(BukuNonFiksiPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        nonFiksiRB.setSelected(true);
+        fiksiRB.setEnabled(false);
+        nonFiksiRB.setEnabled(false);
     }
 
     /**
@@ -273,6 +277,8 @@ public class BukuNonFiksiPage extends javax.swing.JFrame {
 
     private void listBukuNonFiksiTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listBukuNonFiksiTableMouseClicked
         // TODO add your handling code here:
+        fiksiRB.setEnabled(true);
+        nonFiksiRB.setEnabled(true);
         int row = listBukuNonFiksiTable.getSelectedRow();
         
         if (row >= 0) {
@@ -312,59 +318,106 @@ public class BukuNonFiksiPage extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
-        String judulBuku = judulTF.getText();
-        String penulisBuku = penulisTF.getText();
-        String genreBuku = app.getSelectedButtonText(genreButtonGroup);
-        String subGenreTopikBuku = subGenreTopikTF.getText();
-        String bahasaBuku = bahasaTF.getText();
-        int jumlahBuku = Integer.parseInt(jumlahTF.getText());
-
-        Buku buku = new Buku(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
-
         try {
-            int idBukuBaru = buku.createData();
-            if (idBukuBaru != -1) {
-                BukuNonFiksi bukuNonFiksi = new BukuNonFiksi(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku, subGenreTopikBuku);
-                bukuNonFiksi.setIdBuku(idBukuBaru);
-                bukuNonFiksi.createData();
+            ArrayList<String> textFields = new ArrayList<>();
+            String judulBuku = judulTF.getText();
+            textFields.add(judulBuku);
+            String penulisBuku = penulisTF.getText();
+            textFields.add(penulisBuku);
+            String genreBuku = app.getSelectedButtonText(genreButtonGroup);
+            String subGenreTopikBuku = subGenreTopikTF.getText();
+            textFields.add(subGenreTopikBuku);
+            String bahasaBuku = bahasaTF.getText();
+            textFields.add(bahasaBuku);
+            String stringJumlahBuku = jumlahTF.getText();
+            textFields.add(stringJumlahBuku);
 
-                JOptionPane.showMessageDialog(this, "Buku berhasil ditambahkan!");
+            if (App.areAnyFieldsEmpty(textFields) || genreButtonGroup.getSelection() == null) {
+                JOptionPane.showMessageDialog(this, "Semua Field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Gagal menambahkan buku.", "Error", JOptionPane.ERROR_MESSAGE);
+                int jumlahBuku = Integer.parseInt(stringJumlahBuku);
+                Buku buku = new Buku(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
+                try {
+                    int idBukuBaru = buku.createData();
+                    if (idBukuBaru != -1) {
+                        BukuNonFiksi bukuNonFiksi = new BukuNonFiksi(judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku, subGenreTopikBuku);
+                        bukuNonFiksi.setIdBuku(idBukuBaru);
+                        bukuNonFiksi.createData();
+
+                        JOptionPane.showMessageDialog(this, "Buku berhasil ditambahkan!");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Gagal menambahkan buku.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    new BukuNonFiksiPage().setVisible(true);
+                    dispose();
+                }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            new BukuNonFiksiPage().setVisible(true);
-            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Tolong masukkan angka dalam text field Jumlah Buku!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
-        String judulBuku = judulTF.getText();
-        String penulisBuku = penulisTF.getText();
-        String genreBuku = app.getSelectedButtonText(genreButtonGroup);
-        String subGenreTopikBuku = subGenreTopikTF.getText();
-        String bahasaBuku = bahasaTF.getText();
-        int jumlahBuku = Integer.parseInt(jumlahTF.getText());
-
-        Buku buku = new Buku(idBukuUpdate, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
-
         try {
-            buku.updateData();
-            BukuNonFiksi bukuNonFiksi = new BukuNonFiksi(idBukuUpdate, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku, subGenreTopikBuku);
-            if (bukuNonFiksi.updateData()) {
-                JOptionPane.showMessageDialog(this, "Buku berhasil diupdate!");
+            ArrayList<String> textFields = new ArrayList<>();
+            String judulBuku = judulTF.getText();
+            textFields.add(judulBuku);
+            String penulisBuku = penulisTF.getText();
+            textFields.add(penulisBuku);
+            String genreBuku = app.getSelectedButtonText(genreButtonGroup);
+            String subGenreTopikBuku = subGenreTopikTF.getText();
+            textFields.add(subGenreTopikBuku);
+            String bahasaBuku = bahasaTF.getText();
+            textFields.add(bahasaBuku);
+            String stringJumlahBuku = jumlahTF.getText();
+            textFields.add(stringJumlahBuku);
+
+            if (App.areAnyFieldsEmpty(textFields) || genreButtonGroup.getSelection() == null) {
+                JOptionPane.showMessageDialog(this, "Semua Field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Gagal mengupdate buku.", "Error", JOptionPane.ERROR_MESSAGE);
+                int jumlahBuku = Integer.parseInt(stringJumlahBuku);
+                Buku buku = new Buku(idBukuUpdate, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku);
+                BukuNonFiksi bukuNonFiksi = new BukuNonFiksi(idBukuUpdate, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku, subGenreTopikBuku);
+                if (genreBuku == "Non-Fiksi") {
+                    try {
+                        buku.updateData();
+                        if (bukuNonFiksi.updateData()) {
+                            JOptionPane.showMessageDialog(this, "Buku berhasil diupdate!");
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Gagal mengupdate buku!", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "Gagal mengupdate buku!", "Error", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        new BukuNonFiksiPage().setVisible(true);
+                        dispose();
+                    }
+                } else {
+                    try {
+                        buku.updateData();
+                        BukuFiksi bukuFiksi = new BukuFiksi(idBukuUpdate, judulBuku, penulisBuku, genreBuku, bahasaBuku, jumlahBuku, subGenreTopikBuku);
+                        if (bukuFiksi.createData() == 1) {
+                            JOptionPane.showMessageDialog(this, "Buku berhasil diupdate!");
+                            bukuNonFiksi.deleteData();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Gagal mengupdate buku!", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "Gagal mengupdate buku!", "Error", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        new BukuNonFiksiPage().setVisible(true);
+                        dispose();
+                    }
+                }
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal mengupdate buku.", "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(BukuPage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            new BukuNonFiksiPage().setVisible(true);
-            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Tolong masukkan angka dalam text field Jumlah Buku!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 

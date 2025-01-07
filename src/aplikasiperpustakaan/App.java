@@ -4,10 +4,13 @@
  */
 package aplikasiperpustakaan;
 
+import java.awt.TextField;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JTextField;
 
 /**
  *
@@ -24,6 +27,15 @@ public class App {
             }
         }
         return null;
+    }
+    
+    public static boolean areAnyFieldsEmpty(ArrayList<String> textFields) {
+        for (String textField : textFields) {
+            if (textField.trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public static void main(String[] args) throws SQLException {

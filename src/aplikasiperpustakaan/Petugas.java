@@ -19,7 +19,11 @@ public class Petugas extends Pengguna{
     public Petugas(){
     }
 
-    
+    public Petugas(int idPetugas, String passwordPetugas) {
+        this.idPetugas = idPetugas;
+        this.passwordPetugas = passwordPetugas;
+    }
+
     public Petugas(String passwordPetugas, String namaPengguna, String kontakPengguna) {
         super(namaPengguna, kontakPengguna);
         this.idPetugas = idPetugas;
@@ -79,7 +83,7 @@ public class Petugas extends Pengguna{
         return super.getKontakPengguna();
     }
 
-    public boolean loginPetugas(int idPetugas, String password) throws SQLException{
+    public boolean loginPetugas() throws SQLException{
         Connection dbConnection = null;
         PreparedStatement ps = null;
         boolean flag = false;
@@ -89,8 +93,8 @@ public class Petugas extends Pengguna{
             dbConnection = kdb.getConnection();
                     
             ps = dbConnection.prepareStatement(querySQL);
-            ps.setInt(1, idPetugas);
-            ps.setString(2, password);
+            ps.setInt(1, this.idPetugas);
+            ps.setString(2, this.passwordPetugas);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -99,6 +103,7 @@ public class Petugas extends Pengguna{
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            
         } finally {
             ps.close();
         }
